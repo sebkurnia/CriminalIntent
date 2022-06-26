@@ -1,2 +1,2 @@
 # CriminalIntent
-CriminalIntent for Android learning
+CriminalIntent for Android learning.
