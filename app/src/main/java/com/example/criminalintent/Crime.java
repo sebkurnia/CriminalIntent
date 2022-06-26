@@ -9,6 +9,7 @@ public class Crime {
     private String title;
     private Date date;
     private boolean solved;
+    private String suspect;
 
     public Crime() {
         this(UUID.randomUUID());
@@ -49,5 +50,13 @@ public class Crime {
 
     public void setSolved(boolean solved) {
         this.solved = solved;
+    }
+
+    public String getSuspect() {
+        return suspect;
+    }
+
+    public void setSuspect(String suspect) {
+        this.suspect = suspect;
     }
 }

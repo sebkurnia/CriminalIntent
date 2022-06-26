@@ -5,9 +5,11 @@ the same as CrimeListFragment.
 
 package com.example.criminalintent;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -36,6 +38,7 @@ public class CrimeFragment extends Fragment {
     private Crime crime;
     private EditText titleField;
     private Button dateButton;
+    private Button reportButton;
     private CheckBox solvedCheckBox;
 
     public static CrimeFragment newInstance(UUID crimeId) {
@@ -133,11 +136,59 @@ public class CrimeFragment extends Fragment {
             }
         });
 
+        reportButton = (Button) v.findViewById(R.id.report_crime);
+        reportButton.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View v) {
+                /*
+                Some important parts of the Intent: First, the ACTION trying to be performed: for
+                sending something, we use ACTION_SEND
+                We also dictate the TYPE of data that we want to send using the text/plain command
+                If we want to explicitly define a "chooser" for the send action, we use the
+                createChooser method and pass the intent + the message that you want to display
+                above the choices.
+                */
+                Intent i = new Intent(Intent.ACTION_SEND);
+                i.setType("text/plain");
+                i.putExtra(Intent.EXTRA_TEXT, getCrimeReport());
+                i.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.crime_report_subject));
+                i = Intent.createChooser(i, getString(R.string.send_report));
+                startActivity(i);
+            }
+
+
+        });
+
         return v;
     }
 
     private void updateDate() {
         dateButton.setText(crime.getDate().toString());
+    }
+
+    private String getCrimeReport() {
+        String solvedString = null;
+        if (crime.isSolved()) {
+            solvedString = getString(R.string.crime_report_solved);
+        } else {
+            solvedString = getString(R.string.crime_report_unsolved);
+        }
+
+        String dateFormat = "EEE, MMM dd";
+        String dateString = DateFormat.format(dateFormat, crime.getDate()).toString();
+        
+        String suspect = crime.getSuspect();
+        if (suspect == null) {
+            suspect = getString(R.string.crime_report_no_suspect);
+        } else {
+            suspect = getString(R.string.crime_report_suspect, suspect);
+        }
+        
+        String combinedReport = getString(R.string.crime_report, crime.getTitle(), dateString,
+                solvedString, suspect);
+        
+        return combinedReport;
+
     }
 
 
