@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Android Dev/CriminalIntent/app/src/main/res/drawable-anydpi/ic_menu_add.xml" value="0.3675" />
+        <entry key="..\:/Android Dev/CriminalIntent/app/src/main/res/layout/activity_crime_pager.xml" value="0.4125" />
+        <entry key="..\:/Android Dev/CriminalIntent/app/src/main/res/layout/activity_fragment.xml" value="0.41938405797101447" />
+        <entry key="..\:/Android Dev/CriminalIntent/app/src/main/res/layout/activity_main.xml" value="0.26494427558257344" />
+        <entry key="..\:/Android Dev/CriminalIntent/app/src/main/res/layout/dialog_date.xml" value="0.38858695652173914" />
+        <entry key="..\:/Android Dev/CriminalIntent/app/src/main/res/layout/fragment_crime.xml" value="0.303125" />
+        <entry key="..\:/Android Dev/CriminalIntent/app/src/main/res/layout/fragment_crime_list.xml" value="0.2916666666666667" />
+        <entry key="..\:/Android Dev/CriminalIntent/app/src/main/res/layout/list_item_crime.xml" value="0.3171875" />
+        <entry key="..\:/Android Dev/CriminalIntent/app/src/main/res/menu/crime_fragment_menu.xml" value="0.5583333333333333" />
+        <entry key="..\:/Android Dev/CriminalIntent/app/src/main/res/menu/fragment_crime_list.xml" value="0.1" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
