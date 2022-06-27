@@ -6,7 +6,9 @@ the same as CrimeListFragment.
 package com.example.criminalintent;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
@@ -21,6 +23,9 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -34,11 +39,13 @@ public class CrimeFragment extends Fragment {
     private static final String ARG_CRIME_ID = "crime_id";
     private static final String DIALOG_DATE = "DialogDate";
     private static final String REQUEST_DATE = "date_request_key";
+    private static final int REQUEST_CONTACT = 1;
 
     private Crime crime;
     private EditText titleField;
     private Button dateButton;
     private Button reportButton;
+    private Button suspectButton;
     private CheckBox solvedCheckBox;
 
     public static CrimeFragment newInstance(UUID crimeId) {
@@ -156,7 +163,14 @@ public class CrimeFragment extends Fragment {
                 startActivity(i);
             }
 
+        });
 
+        suspectButton = (Button) v.findViewById(R.id.crime_suspect);
+        suspectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
         });
 
         return v;
