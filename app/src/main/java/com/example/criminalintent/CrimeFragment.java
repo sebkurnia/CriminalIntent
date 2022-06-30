@@ -6,6 +6,9 @@ the same as CrimeListFragment.
 package com.example.criminalintent;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -31,6 +34,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentResultListener;
 
+import java.io.Console;
 import java.util.UUID;
 import java.util.Date;
 
@@ -39,7 +43,6 @@ public class CrimeFragment extends Fragment {
     private static final String ARG_CRIME_ID = "crime_id";
     private static final String DIALOG_DATE = "DialogDate";
     private static final String REQUEST_DATE = "date_request_key";
-    private static final int REQUEST_CONTACT = 1;
 
     private Crime crime;
     private EditText titleField;
@@ -165,13 +168,59 @@ public class CrimeFragment extends Fragment {
 
         });
 
-        suspectButton = (Button) v.findViewById(R.id.crime_suspect);
-        suspectButton.setOnClickListener(new View.OnClickListener() {
+        /*
+        Here we create an ActivityResultLauncher where we register an Activity to give us back some
+        result (which we specify here). params for registerForActivityResult include a new
+        ActivityResultsContract, specifically a PickContact contract, and then we must override
+        the existing onActivityResult with some behavior for what to do with the final information.
+
+        The parameter for the ActivityResultLauncher (in this case Void) is just the info you'd
+        like to pass to the started activity as an argument.
+        */
+        ActivityResultLauncher<Void> getContact = registerForActivityResult(new ActivityResultContracts.PickContact(), new ActivityResultCallback<Uri>() {
             @Override
-            public void onClick(View view) {
+            public void onActivityResult(Uri result) {
+                // Here we have to update the SQL layer with the info we got from the Uri result
+                // We must scan (cursor) over the contacts database to get to the desired contact
+
+                String[] queryFields = new String[] {ContactsContract.Contacts.DISPLAY_NAME};
+
+                Cursor c = getActivity().getContentResolver().query(result, queryFields,null,null,null);
+
+                if (c.getCount() == 0) {
+                    return;
+                } else {
+                    c.moveToFirst();
+                    String suspectName = c.getString(0);
+                    crime.setSuspect(suspectName);
+                    suspectButton.setText(suspectName);
+                }
+
+                c.close();
 
             }
         });
+
+
+
+        suspectButton = (Button) v.findViewById(R.id.crime_suspect);
+
+        suspectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getContact.launch(null);
+            }
+        });
+
+        Intent getContactIntent = getContact.getContract().createIntent(getContext(), null);
+
+//        if (!canResolveIntent(getContactIntent)) {
+//            suspectButton.setEnabled(false);
+//        }
+
+        if (crime.getSuspect() != null) {
+            suspectButton.setText(crime.getSuspect());
+        }
 
         return v;
     }
@@ -204,6 +253,18 @@ public class CrimeFragment extends Fragment {
         return combinedReport;
 
     }
+
+    /*
+    Helper method to determine whether the OS can handle opening a Contacts app.
+    @params  : Intent
+    @returns : ResolveInfo returns the Activity which can handle the intent, null otherwise (bad)
+    */
+//    private boolean canResolveIntent(Intent intent) {
+//        PackageManager pkgManager = getActivity().getPackageManager();
+//        ResolveInfo resolvedActivity = pkgManager.resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
+//        System.out.println("resolved activity = " + resolvedActivity);
+//        return resolvedActivity != null;
+//    }
 
 
 }
